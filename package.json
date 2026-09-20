@@ -1,0 +1,11 @@
+{
+  "name": "ngwn-tournament",
+  "version": "1.0.0",
+  "private": true,
+  "description": "NEWGEN Tournament 1",
+  "scripts": {
+    "start": "npx -y serve . -l 3000",
+    "dev": "npx -y serve . -l 3000",
+    "build": "node render_bracket.js && node update_index.js && node build_bundles.js"
+  }
+}

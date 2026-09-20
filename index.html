@@ -27,7 +27,275 @@
         window.addEventListener("pageshow", resetToTop, { once: true });
       })();
     </script><link rel="stylesheet" href="_astro/index%40_%40astro.D4QzF_Pf.css">
-<link rel="stylesheet" href="_astro/Layout.BHgu_56x.css"></head> <body class="bg-black overflow-x-hidden" data-api-base-url="https://api.nwgn.art/"> <header id="site-header" class="fixed top-0 left-[50%] transform -translate-x-1/2 z-50 w-full min-h-24 py-3 md:py-0 flex justify-center items-center"> <div class="max-w-450 w-full mx-auto px-3 flex flex-col md:flex-row justify-center md:justify-between items-center gap-2 md:gap-0"> <a href="index.html" class="text-[clamp(0.95rem,3.7vw,1.875rem)] tracking-tight text-white text-center md:text-left transition-colors duration-130 hover:text-white/70">
+<link rel="stylesheet" href="_astro/Layout.BHgu_56x.css"><script>
+    (function () {
+      try {
+        function readTheme() {
+          try {
+            var l = localStorage.getItem("ngt_gender_theme");
+            if (l === "boy" || l === "girl") return l;
+          } catch(e) {}
+          try {
+            var s = sessionStorage.getItem("ngt_gender_theme");
+            if (s === "boy" || s === "girl") return s;
+          } catch(e) {}
+          try {
+            var m = document.cookie.match(/(?:^|; )ngt_gender_theme=([^;]*)/);
+            if (m && (m[1] === "boy" || m[1] === "girl")) return m[1];
+          } catch(e) {}
+          try {
+            if (window.name && (window.name === "ngt_theme:boy" || window.name === "ngt_theme:girl")) {
+              return window.name.replace("ngt_theme:", "");
+            }
+          } catch(e) {}
+          return null;
+        }
+        var savedTheme = readTheme();
+        if (savedTheme === "boy" || savedTheme === "girl") {
+          document.documentElement.setAttribute("data-theme", savedTheme);
+          document.documentElement.classList.add("has-theme");
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="stylesheet" href="theme.css">
+  </head> <body class="bg-black overflow-x-hidden" data-api-base-url="https://api.nwgn.art/">
+  <!-- EXPANDING THEME WASH TRANSITION LAYER -->
+  <div id="theme-expand-wash" class="theme-expand-wash" aria-hidden="true"></div>
+
+  <!-- INTERACTIVE OPENING QUESTION SELECTOR OVERLAY (Hidden by default to prevent FOUC on reload) -->
+  <div id="gender-selector" role="dialog" aria-modal="true" aria-label="Visual Personality Selector" style="display: none;">
+    <div class="selector-ambient-layer"></div>
+    <div class="selector-bg-grid"></div>
+
+    <div class="selector-container">
+      <h1 class="selector-title">are you a boy or girl?</h1>
+
+      <div class="selector-options">
+        <!-- BOY OPTION -->
+        <button id="select-boy-btn" type="button" class="gender-card card-boy" aria-label="Boy">
+          <span class="card-label">BOY</span>
+        </button>
+
+        <!-- GIRL OPTION -->
+        <button id="select-girl-btn" type="button" class="gender-card card-girl" aria-label="Girl">
+          <span class="card-label">GIRL</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      const THEME_KEY = "ngt_gender_theme";
+      const selector = document.getElementById("gender-selector");
+      const wash = document.getElementById("theme-expand-wash");
+      const boyBtn = document.getElementById("select-boy-btn");
+      const girlBtn = document.getElementById("select-girl-btn");
+
+      function saveTheme(theme) {
+        try { localStorage.setItem(THEME_KEY, theme); } catch(e) {}
+        try { sessionStorage.setItem(THEME_KEY, theme); } catch(e) {}
+        try { document.cookie = "ngt_gender_theme=" + theme + "; path=/; max-age=31536000; SameSite=Lax"; } catch(e) {}
+        try { window.name = "ngt_theme:" + theme; } catch(e) {}
+      }
+
+      function getSavedTheme() {
+        try {
+          var l = localStorage.getItem(THEME_KEY);
+          if (l === "boy" || l === "girl") return l;
+        } catch(e) {}
+        try {
+          var s = sessionStorage.getItem(THEME_KEY);
+          if (s === "boy" || s === "girl") return s;
+        } catch(e) {}
+        try {
+          var m = document.cookie.match(/(?:^|; )ngt_gender_theme=([^;]*)/);
+          if (m && (m[1] === "boy" || m[1] === "girl")) return m[1];
+        } catch(e) {}
+        try {
+          if (window.name && (window.name === "ngt_theme:boy" || window.name === "ngt_theme:girl")) {
+            return window.name.replace("ngt_theme:", "");
+          }
+        } catch(e) {}
+        return null;
+      }
+
+      const storedTheme = getSavedTheme();
+
+      if (storedTheme === "boy" || storedTheme === "girl") {
+        document.documentElement.setAttribute("data-theme", storedTheme);
+        document.documentElement.classList.add("has-theme");
+        if (selector) {
+          selector.style.display = "none";
+          selector.remove();
+        }
+      } else {
+        // First-time visitors: unhide selector and attach listeners
+        if (selector) {
+          selector.style.display = "flex";
+
+          boyBtn?.addEventListener("mouseenter", () => selector.classList.add("hover-boy"));
+          boyBtn?.addEventListener("mouseleave", () => selector.classList.remove("hover-boy"));
+          girlBtn?.addEventListener("mouseenter", () => selector.classList.add("hover-girl"));
+          girlBtn?.addEventListener("mouseleave", () => selector.classList.remove("hover-girl"));
+
+          const handleSelect = (theme) => {
+            saveTheme(theme);
+            document.documentElement.setAttribute("data-theme", theme);
+            document.documentElement.classList.add("has-theme");
+
+            if (wash) {
+              wash.className = "theme-expand-wash active-" + theme;
+            }
+
+            setTimeout(() => {
+              selector.classList.add("is-dismissed");
+              setTimeout(() => {
+                if (wash) {
+                  wash.className = "theme-expand-wash";
+                }
+                selector.remove();
+              }, 750);
+            }, 300);
+          };
+
+          boyBtn?.addEventListener("click", () => handleSelect("boy"));
+          girlBtn?.addEventListener("click", () => handleSelect("girl"));
+
+          boyBtn?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleSelect("boy");
+            }
+          });
+          girlBtn?.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleSelect("girl");
+            }
+          });
+        }
+      }
+
+      window.__openThemeSelector = () => {
+        try { localStorage.removeItem(THEME_KEY); } catch(e) {}
+        try { sessionStorage.removeItem(THEME_KEY); } catch(e) {}
+        try { document.cookie = "ngt_gender_theme=; path=/; max-age=0"; } catch(e) {}
+        try { window.name = ""; } catch(e) {}
+        window.location.reload();
+      };
+    })();
+  </script>
+
+  <!-- FIRSTHAND SITE LOADER -->
+  <div id="site-loader" style="position: fixed; inset: 0; z-index: 99999; background: #050505; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); pointer-events: auto;">
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 24px; max-width: 90vw;">
+      <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: clamp(1.2rem, 3.5vw, 2.2rem); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ffffff; text-align: center; text-shadow: 0 0 30px rgba(255,255,255,0.2);">
+        NEWGEN TOURNAMENT 1
+      </div>
+      <div style="width: clamp(220px, 40vw, 360px); height: 2px; background: rgba(255, 255, 255, 0.1); border-radius: 999px; overflow: hidden; position: relative;">
+        <div id="loader-progress-bar" style="position: absolute; left: 0; top: 0; bottom: 0; width: 0%; background: linear-gradient(90deg, #c78a56, #e2c275, #ffffff); border-radius: 999px; transition: width 0.15s ease-out; box-shadow: 0 0 12px rgba(226, 194, 117, 0.6);"></div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center; width: clamp(220px, 40vw, 360px); font-family: monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5);">
+        <span id="loader-status-text">INITIALIZING...</span>
+        <span id="loader-percent-text">0%</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    (function() {
+      const loader = document.getElementById("site-loader");
+      const bar = document.getElementById("loader-progress-bar");
+      const status = document.getElementById("loader-status-text");
+      const percent = document.getElementById("loader-percent-text");
+      if (!loader || !bar || !status || !percent) return;
+
+      let targetProgress = 10;
+      let currentProgress = 0;
+      let animFrame = null;
+
+      const updateDisplay = () => {
+        currentProgress += (targetProgress - currentProgress) * 0.18;
+        const rounded = Math.min(100, Math.round(currentProgress));
+        bar.style.width = rounded + "%";
+        percent.textContent = rounded + "%";
+        if (currentProgress < 99.5 || targetProgress < 100) {
+          animFrame = requestAnimationFrame(updateDisplay);
+        } else {
+          bar.style.width = "100%";
+          percent.textContent = "100%";
+          status.textContent = "READY";
+          setTimeout(() => {
+            loader.style.opacity = "0";
+            loader.style.transform = "scale(1.02)";
+            loader.style.pointerEvents = "none";
+            document.body.style.overflow = "";
+            setTimeout(() => {
+              if (loader.parentNode) loader.parentNode.removeChild(loader);
+            }, 600);
+          }, 200);
+        }
+      };
+      animFrame = requestAnimationFrame(updateDisplay);
+
+      const tasks = [];
+
+      if ("fonts" in document && document.fonts.ready) {
+        tasks.push(document.fonts.ready.then(() => {
+          targetProgress = Math.max(targetProgress, 35);
+          status.textContent = "FONTS READY";
+        }).catch(() => {}));
+      }
+
+      const avatarUrls = [
+        "https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png",
+        "https://cdn.discordapp.com/avatars/1483876630270050436/77ecef8c4490049e46a5855d62421b32.png",
+        "https://cdn.discordapp.com/avatars/319574305274986498/bf19d0bd23a09463fc70c165c01ac4d7.png",
+        "https://cdn.discordapp.com/avatars/140412016522166272/f114e2de830842c469657e0da4be9dff.png",
+        "https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png",
+        "https://cdn.discordapp.com/avatars/395873307850833921/198fa433114e1b9399fe211471c22540.png",
+        "https://cdn.discordapp.com/avatars/607242372719312961/e6413a86b0e0ae0cda049bb09fa3ece8.png",
+        "https://cdn.discordapp.com/avatars/960170719407382569/d5f43ac41f6cf70b1f9680551abeeeeb.png",
+        "https://cdn.discordapp.com/avatars/634426181793349652/4210b37fb20e889cd4ba45b45cd145a8.png",
+        "https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png",
+        "https://cdn.discordapp.com/avatars/432279612572303370/926fd77c4876517832eb4ce799da85c3.png",
+        "https://cdn.discordapp.com/avatars/1321510684189655060/9a6fbaa786c4316b12826f1b66e106aa.png",
+        "https://cdn.discordapp.com/avatars/739388055546232893/7751079f928efe771e8c22af38677112.png",
+        "https://cdn.discordapp.com/avatars/1224486850903802038/ede0a08c8b7fcc4d6cd3363a6079ac27.png",
+        "https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png",
+        "https://cdn.discordapp.com/avatars/744546636608569384/01eab0ff7a607090f921735e02c4d63d.png"
+      ];
+      let loaded = 0;
+      const preloadPromise = Promise.all(avatarUrls.map(url => new Promise(resolve => {
+        const img = new Image();
+        img.onload = img.onerror = () => {
+          loaded++;
+          targetProgress = Math.max(targetProgress, 35 + Math.round((loaded / avatarUrls.length) * 45));
+          status.textContent = "PRELOADING BRACKET (" + loaded + "/" + avatarUrls.length + ")";
+          resolve();
+        };
+        img.src = url;
+      })));
+      tasks.push(preloadPromise);
+
+      const docReady = new Promise(resolve => {
+        if (document.readyState === "complete") resolve();
+        else window.addEventListener("load", resolve, { once: true });
+      });
+      tasks.push(docReady);
+
+      const timeoutPromise = new Promise(resolve => setTimeout(resolve, 2000));
+
+      Promise.race([
+        Promise.all(tasks),
+        timeoutPromise
+      ]).then(() => {
+        targetProgress = 100;
+        status.textContent = "ALL ASSETS READY";
+      });
+    })();
+  </script>
+ <header id="site-header" class="fixed top-0 left-[50%] transform -translate-x-1/2 z-50 w-full min-h-24 py-3 md:py-0 flex justify-center items-center"> <div class="max-w-450 w-full mx-auto px-3 flex flex-col md:flex-row justify-center md:justify-between items-center gap-2 md:gap-0"> <a href="index.html" class="text-[clamp(0.95rem,3.7vw,1.875rem)] tracking-tight text-white text-center md:text-left transition-colors duration-130 hover:text-white/70">
 NEWGEN TOURNAMENT 1
 </a> <ol class="decoration-transparent decoration-0 text-white text-[clamp(0.95rem,3.2vw,1.5rem)] tracking-tight flex flex-wrap justify-center items-center gap-x-4 gap-y-1 md:gap-12.5"> <li> <a class="header-ngc-link" href="ngc/index.html" aria-label="Newgen Community Contest, 200 dollars">NGC $200</a> </li> <li> <a class="transition-colors duration-130 hover:text-white/70 hover:underline" href="index.html#bracket">Bracket</a> </li> <!-- <li>
             <a
@@ -42,11 +310,11 @@ Judge
 Admin
 </a> <button id="logout-button" type="button" class="w-full text-left px-3 py-2 text-[16px] text-white transition-colors duration-130 hover:bg-white/10 rounded-sm" role="menuitem">
 Log out
-</button> </div> </div> </li> </ol> </div> </header> <main class="max-w-450 w-full mx-auto px-3">  <div class="w-full h-full flex flex-col gap-50"> <section id="hero-winners-transition" class="hero-winners-transition" aria-label="Hero to winners transition" data-astro-cid-efhtxqxr> <div class="hero-winners-pin" data-astro-cid-efhtxqxr> <div class="hero-transition-layer" data-transition-hero data-astro-cid-efhtxqxr> <section id="hero-section" class="relative h-dvh w-screen left-1/2 -translate-x-1/2 flex justify-center items-center overflow-hidden" data-astro-cid-4z5ypzu4> <div id="hero-bg-video-layer" class="hero-bg-video-layer" aria-hidden="true" data-astro-cid-4z5ypzu4> <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover" data-astro-cid-4z5ypzu4> <source src="background.mp4" type="video/mp4" data-astro-cid-4z5ypzu4> </video> <div class="absolute inset-0 bg-black/50" data-astro-cid-4z5ypzu4></div> </div> <p id="hero-title" class="relative z-20 w-full px-4 flex flex-wrap items-center justify-center gap-x-[0.35em] gap-y-[0.05em] leading-[0.92] text-white font-extralight text-center text-[clamp(1.05rem,5.35vw,6.5rem)] transition-opacity duration-150" data-astro-cid-4z5ypzu4> <span data-astro-cid-4z5ypzu4>NEWGEN<span class="font-bold" data-astro-cid-4z5ypzu4>1400$EDITING</span>TOURNAMENT</span> </p> </section> <script>
+</button> </div> </div> </li> </ol> </div> </header> <main class="max-w-450 w-full mx-auto px-3">  <div class="w-full h-full flex flex-col gap-50"> <section id="hero-winners-transition" class="hero-winners-transition" aria-label="Hero to winners transition" data-astro-cid-efhtxqxr> <div class="hero-winners-pin" data-astro-cid-efhtxqxr> <div class="hero-transition-layer" data-transition-hero data-astro-cid-efhtxqxr> <section id="hero-section" class="relative h-dvh w-screen left-1/2 -translate-x-1/2 flex justify-center items-center overflow-hidden" data-astro-cid-4z5ypzu4> <div id="hero-bg-video-layer" class="hero-bg-video-layer" aria-hidden="true" data-astro-cid-4z5ypzu4> <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover" data-astro-cid-4z5ypzu4> <source src="videos/Comp%201_9.mp4" type="video/mp4" data-astro-cid-4z5ypzu4> </video> <div class="absolute inset-0 bg-black/50" data-astro-cid-4z5ypzu4></div> </div> <p id="hero-title" class="relative z-20 w-full px-4 flex flex-wrap items-center justify-center gap-x-[0.35em] gap-y-[0.05em] leading-[0.92] text-white font-extralight text-center text-[clamp(1.05rem,5.35vw,6.5rem)] transition-opacity duration-150" data-astro-cid-4z5ypzu4> <span data-astro-cid-4z5ypzu4>NEWGEN<span class="font-bold" data-astro-cid-4z5ypzu4>1400$EDITING</span>TOURNAMENT</span> </p> </section> <script>
   (() => {
     window.addEventListener("siteSettings:loaded", (event) => {
       const videoUrl = event.detail?.backgroundVideoUrl;
-      if (!videoUrl) return;
+      if (!videoUrl || videoUrl.includes("background_v1783289610658.mp4")) return;
       const bgVideo = document.querySelector("#hero-bg-video-layer video");
       if (!(bgVideo instanceof HTMLVideoElement)) return;
       const source = bgVideo.querySelector("source");
@@ -57,7 +325,7 @@ Log out
       }
     });
   })();
-</script> </div> <div class="winners-transition-layer" data-transition-winners data-astro-cid-efhtxqxr> <div class="winners-transition-shell" data-astro-cid-efhtxqxr> <section id="winners" class="winners-screen" aria-labelledby="winners-title" data-astro-cid-6ur5r5pq> <div class="winners-copy" data-winners-title-reveal data-astro-cid-6ur5r5pq> <h2 id="winners-title" data-astro-cid-6ur5r5pq>NGT1 WINNERS</h2> </div> <div class="winners-stage" aria-label="NEWGEN Tournament 1 winners" data-astro-cid-6ur5r5pq> <article class="winner-card winner-card-second" data-winner-reveal="second" data-astro-cid-6ur5r5pq> <svg class="winner-rank-number rank-silver" viewBox="0 0 430 720" aria-hidden="true" data-astro-cid-6ur5r5pq> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-rank-silver" x1="360" y1="-70" x2="-50" y2="735" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#F1F4F8" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#343B45" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-rank-text" x="28" y="655" fill="url(#winner-rank-silver)" data-astro-cid-6ur5r5pq> 2 </text> </svg> <div class="winner-detail second-detail" data-astro-cid-6ur5r5pq> <p class="winner-place" data-astro-cid-6ur5r5pq>2ND PLACE</p> <span class="winner-rule" data-astro-cid-6ur5r5pq></span> <h3 data-astro-cid-6ur5r5pq> <a class="winner-name-link" data-winner-name data-winner-place="second" data-astro-cid-6ur5r5pq> goof </a> </h3> <svg class="winner-prize prize-silver" viewBox="0 0 500 230" role="img" aria-label="300 dollars" data-astro-cid-6ur5r5pq> <title>$300</title> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-prize-silver" x1="330" y1="-40" x2="0" y2="210" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#D7DBE0" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#343B45" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-prize-text" x="16" y="170" fill="url(#winner-prize-silver)" data-astro-cid-6ur5r5pq> $300 </text> </svg> <p class="winner-title" data-winner-title data-winner-place="second" data-astro-cid-6ur5r5pq> The Finalist </p> </div> </article> <article class="winner-card winner-card-first" data-winner-reveal="first" data-astro-cid-6ur5r5pq> <svg class="winner-rank-number rank-gold" viewBox="0 0 330 720" aria-hidden="true" data-astro-cid-6ur5r5pq> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-rank-gold" x1="-40" y1="130" x2="410" y2="580" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#E2C275" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#050402" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-rank-text" x="34" y="655" fill="url(#winner-rank-gold)" data-astro-cid-6ur5r5pq> 1 </text> </svg> <div class="winner-detail first-detail" data-astro-cid-6ur5r5pq> <p class="winner-place" data-astro-cid-6ur5r5pq>1ST PLACE</p> <span class="winner-rule" data-astro-cid-6ur5r5pq></span> <h3 data-astro-cid-6ur5r5pq> <a class="winner-name-link" data-winner-name data-winner-place="first" data-astro-cid-6ur5r5pq> walsii </a> </h3> <svg class="winner-prize prize-gold" viewBox="0 0 500 230" role="img" aria-label="700 dollars" data-astro-cid-6ur5r5pq> <title>$700</title> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-prize-gold" x1="-20" y1="35" x2="430" y2="155" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#E2C275" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#080604" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-prize-text" x="16" y="170" fill="url(#winner-prize-gold)" data-astro-cid-6ur5r5pq> $700 </text> </svg> <p class="winner-title" data-winner-title data-winner-place="first" data-astro-cid-6ur5r5pq> The Champion </p> </div> </article> <article class="winner-card winner-card-third" data-winner-reveal="third" data-astro-cid-6ur5r5pq> <svg class="winner-rank-number rank-bronze" viewBox="0 0 430 720" aria-hidden="true" data-astro-cid-6ur5r5pq> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-rank-bronze" x1="-50" y1="720" x2="460" y2="130" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#C78A56" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#56361C" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-rank-text" x="28" y="655" fill="url(#winner-rank-bronze)" data-astro-cid-6ur5r5pq> 3 </text> </svg> <div class="winner-detail third-detail" data-astro-cid-6ur5r5pq> <p class="winner-place" data-astro-cid-6ur5r5pq>3RD PLACE</p> <span class="winner-rule" data-astro-cid-6ur5r5pq></span> <h3 data-astro-cid-6ur5r5pq> <a class="winner-name-link" data-winner-name data-winner-place="third" data-astro-cid-6ur5r5pq> fuze </a> </h3> <svg class="winner-prize prize-bronze" viewBox="0 0 500 230" role="img" aria-label="200 dollars" data-astro-cid-6ur5r5pq> <title>$200</title> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-prize-bronze" x1="-20" y1="180" x2="430" y2="20" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#C78A56" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#56361C" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-prize-text" x="16" y="170" fill="url(#winner-prize-bronze)" data-astro-cid-6ur5r5pq> $200 </text> </svg> <p class="winner-title" data-winner-title data-winner-place="third" data-astro-cid-6ur5r5pq> THE BRONZE </p> </div> </article> </div> </section>  <script type="module" src="_astro/Winners.astro_astro_type_script_index_0_lang.9ape3wy-.js"></script> </div> </div> </div> </section>  <script>
+</script> </div> <div class="winners-transition-layer" data-transition-winners data-astro-cid-efhtxqxr> <div class="winners-transition-shell" data-astro-cid-efhtxqxr> <section id="winners" class="winners-screen" aria-labelledby="winners-title" data-astro-cid-6ur5r5pq> <div class="winners-copy" data-winners-title-reveal data-astro-cid-6ur5r5pq> <h2 id="winners-title" data-astro-cid-6ur5r5pq>NGT1 WINNERS</h2> </div> <div class="winners-stage" aria-label="NEWGEN Tournament 1 winners" data-astro-cid-6ur5r5pq> <article class="winner-card winner-card-second" data-winner-reveal="second" data-astro-cid-6ur5r5pq> <svg class="winner-rank-number rank-silver" viewBox="0 0 430 720" aria-hidden="true" data-astro-cid-6ur5r5pq> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-rank-silver" x1="360" y1="-70" x2="-50" y2="735" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#F1F4F8" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#343B45" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-rank-text" x="28" y="655" fill="url(#winner-rank-silver)" data-astro-cid-6ur5r5pq> 2 </text> </svg> <div class="winner-detail second-detail" data-astro-cid-6ur5r5pq> <p class="winner-place" data-astro-cid-6ur5r5pq>2ND PLACE</p> <span class="winner-rule" data-astro-cid-6ur5r5pq></span> <h3 data-astro-cid-6ur5r5pq> <a class="winner-name-link" data-winner-name data-winner-place="second" data-astro-cid-6ur5r5pq> goof </a> </h3> <svg class="winner-prize prize-silver" viewBox="0 0 500 230" role="img" aria-label="300 dollars" data-astro-cid-6ur5r5pq> <title>$300</title> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-prize-silver" x1="330" y1="-40" x2="0" y2="210" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#D7DBE0" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#343B45" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-prize-text" x="16" y="170" fill="url(#winner-prize-silver)" data-astro-cid-6ur5r5pq> $300 </text> </svg> <p class="winner-title" data-winner-title data-winner-place="second" data-astro-cid-6ur5r5pq> The Finalist </p> </div> </article> <article class="winner-card winner-card-first" data-winner-reveal="first" data-astro-cid-6ur5r5pq> <svg class="winner-rank-number rank-gold" viewBox="0 0 330 720" aria-hidden="true" data-astro-cid-6ur5r5pq> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-rank-gold" x1="-40" y1="130" x2="410" y2="580" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#E2C275" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#050402" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-rank-text" x="34" y="655" fill="url(#winner-rank-gold)" data-astro-cid-6ur5r5pq> 1 </text> </svg> <div class="winner-detail first-detail" data-astro-cid-6ur5r5pq> <p class="winner-place" data-astro-cid-6ur5r5pq>1ST PLACE</p> <span class="winner-rule" data-astro-cid-6ur5r5pq></span> <h3 data-astro-cid-6ur5r5pq> <a class="winner-name-link" data-winner-name data-winner-place="first" data-astro-cid-6ur5r5pq> walsii </a> </h3> <svg class="winner-prize prize-gold" viewBox="0 0 500 230" role="img" aria-label="700 dollars" data-astro-cid-6ur5r5pq> <title>$700</title> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-prize-gold" x1="-20" y1="35" x2="430" y2="155" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#E2C275" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#080604" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-prize-text" x="16" y="170" fill="url(#winner-prize-gold)" data-astro-cid-6ur5r5pq> $700 </text> </svg> <p class="winner-title" data-winner-title data-winner-place="first" data-astro-cid-6ur5r5pq> The Champion </p> </div> </article> <article class="winner-card winner-card-third" data-winner-reveal="third" data-astro-cid-6ur5r5pq> <svg class="winner-rank-number rank-bronze" viewBox="0 0 430 720" aria-hidden="true" data-astro-cid-6ur5r5pq> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-rank-bronze" x1="-50" y1="720" x2="460" y2="130" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#C78A56" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#56361C" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-rank-text" x="28" y="655" fill="url(#winner-rank-bronze)" data-astro-cid-6ur5r5pq> 3 </text> </svg> <div class="winner-detail third-detail" data-astro-cid-6ur5r5pq> <p class="winner-place" data-astro-cid-6ur5r5pq>3RD PLACE</p> <span class="winner-rule" data-astro-cid-6ur5r5pq></span> <h3 data-astro-cid-6ur5r5pq> <a class="winner-name-link" data-winner-name data-winner-place="third" data-astro-cid-6ur5r5pq> fuze </a> </h3> <svg class="winner-prize prize-bronze" viewBox="0 0 500 230" role="img" aria-label="200 dollars" data-astro-cid-6ur5r5pq> <title>$200</title> <defs data-astro-cid-6ur5r5pq> <linearGradient id="winner-prize-bronze" x1="-20" y1="180" x2="430" y2="20" gradientUnits="userSpaceOnUse" data-astro-cid-6ur5r5pq> <stop stop-color="#C78A56" data-astro-cid-6ur5r5pq></stop> <stop offset="1" stop-color="#56361C" data-astro-cid-6ur5r5pq></stop> </linearGradient> </defs> <text class="winner-prize-text" x="16" y="170" fill="url(#winner-prize-bronze)" data-astro-cid-6ur5r5pq> $200 </text> </svg> <p class="winner-title" data-winner-title data-winner-place="third" data-astro-cid-6ur5r5pq> THE BRONZE </p> </div> </article> </div> </section>   </div> </div> </div> </section>  <script>
   (() => {
     const root = document.getElementById("hero-winners-transition");
     if (!(root instanceof HTMLElement)) return;
@@ -109,8 +377,33 @@ Log out
       root.style.setProperty(name, value);
     };
 
+    
+    const updateWinnersLayout = () => {
+      if (window.innerWidth <= 900) {
+        setVar("--winners-scale", "1");
+        setVar("--winners-section-offset", "0px");
+        return;
+      }
+      const vh = window.innerHeight;
+      const header = document.getElementById("site-header");
+      const headerH = header ? header.getBoundingClientRect().height : 90;
+      
+      // Total vertical span of the winners content from top of title (25px) to bottom of card 2 (1060px) is 1060px.
+      const targetH = 1060;
+      const topPadding = Math.max(headerH + 8, 92);
+      const bottomPadding = 20;
+      const availableH = Math.max(280, vh - topPadding - bottomPadding);
+      const scale = Math.min(1, Math.max(0.40, availableH / targetH));
+      const offset = topPadding - (25.6 * scale);
+      
+      setVar("--winners-scale", scale.toFixed(4));
+      setVar("--winners-section-offset", offset.toFixed(1) + "px");
+      setVar("--winners-visual-height", (targetH * scale + offset).toFixed(1) + "px");
+    };
+
     const applyProgress = () => {
       frame = 0;
+      updateWinnersLayout();
 
       if (reducedMotion) {
         setHiddenLinks(false);
@@ -184,24 +477,321 @@ Log out
     handleReducedMotion();
     syncInitialHash();
     window.addEventListener("scroll", requestSync, { passive: true });
-    window.addEventListener("resize", requestSync);
+    window.addEventListener("resize", () => { updateWinnersLayout(); requestSync(); });
     prefersReducedMotion.addEventListener?.("change", handleReducedMotion);
     window.addEventListener("pageshow", () => {
+      updateWinnersLayout();
       syncInitialHash();
       requestSync();
     });
     window.addEventListener("load", () => {
+      updateWinnersLayout();
       syncInitialHash();
-      window.setTimeout(syncInitialHash, 120);
-      window.setTimeout(syncInitialHash, 500);
+      window.setTimeout(() => {
+        updateWinnersLayout();
+        syncInitialHash();
+      }, 120);
+      window.setTimeout(() => {
+        updateWinnersLayout();
+        syncInitialHash();
+      }, 500);
     });
   })();
-</script> <div class="flex flex-col items-center justify-start gap-2 md:gap-3 pt-24 md:pt-[126px] pb-6 md:pb-10 overflow-hidden" id="bracket" data-astro-cid-rsd2vusr> <h2 class="block-title text-white text-center" data-astro-cid-rsd2vusr> TOURNAMENT BRACKET </h2>  <div class="w-full px-2 md:px-4"> <div id="bracket-shell" class="w-full flex flex-col items-center gap-4" data-stub-mode="auto" data-empty-text="Bracket is not available yet." data-total-rounds="5" data-total-participants="32"> <p id="bracket-status" class="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/45 text-center" aria-live="polite">
-Loading bracket...
-</p> <div id="bracket-content" class="w-full hidden"> <div id="bracket-viewport" class="bracket-viewport"> <div id="bracket-stage" class="bracket-stage"></div> </div> </div> <div id="bracket-stub" class="w-full hidden"> <p class="text-[clamp(1rem,2.1vw,1.5rem)] text-white text-center max-w-275 mx-auto uppercase leading-tight">
+</script> <div class="flex flex-col items-center justify-start gap-2 md:gap-3 pt-24 md:pt-[126px] pb-6 md:pb-10 overflow-hidden" id="bracket" data-astro-cid-rsd2vusr> <h2 class="block-title text-white text-center" data-astro-cid-rsd2vusr> TOURNAMENT BRACKET </h2>  <div class="w-full px-2 md:px-4"> <div id="bracket-shell" class="w-full flex flex-col items-center gap-4" data-stub-mode="auto" data-empty-text="Bracket is not available yet." data-total-rounds="4" data-total-participants="16"> <p id="bracket-status" class="text-[10px] md:text-xs uppercase tracking-[0.2em] text-white/45 text-center hidden" aria-live="polite"></p> <div id="bracket-content" class="w-full"> <div id="bracket-viewport" class="bracket-viewport"> <div id="bracket-stage" class="bracket-stage">
+
+          <div class="bracket-side is-left"><div class="bracket-side-track is-left">
+          <div class="bracket-branch is-left" data-depth="3">
+            <div class="bracket-children">
+              <div class="bracket-child">
+          <div class="bracket-branch is-left" data-depth="2">
+            <div class="bracket-children">
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="a67f4f7d-fa0a-4e9c-871d-8152afc7758a" role="button" tabindex="0" aria-label="Open match goof21 versus khalidv2.">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">goof21</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1483876630270050436/77ecef8c4490049e46a5855d62421b32.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">khalidv2.</span>
+              </span>
+            </div>
+          </article>
+        </div>
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="4a0cfe42-e450-49fe-a269-be687ebcdd6e" role="button" tabindex="0" aria-label="Open match seb versus pola">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/319574305274986498/bf19d0bd23a09463fc70c165c01ac4d7.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">seb</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/140412016522166272/f114e2de830842c469657e0da4be9dff.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">pola</span>
+              </span>
+            </div>
+          </article>
+        </div>
+            </div>
+            <div class="bracket-link"></div>
+            
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="499ee237-3fbf-4fe0-8163-55bdb35faf80" role="button" tabindex="0" aria-label="Open match goof versus pola">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">goof</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/140412016522166272/f114e2de830842c469657e0da4be9dff.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">pola</span>
+              </span>
+            </div>
+          </article>
+        
+          </div>
+        </div>
+              <div class="bracket-child">
+          <div class="bracket-branch is-left" data-depth="2">
+            <div class="bracket-children">
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="5b27226c-337e-4e4f-825e-72f290dc0be1" role="button" tabindex="0" aria-label="Open match troubled_duck versus plugdi">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">troubled_duck</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/395873307850833921/198fa433114e1b9399fe211471c22540.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">plugdi</span>
+              </span>
+            </div>
+          </article>
+        </div>
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="1379a0e0-bcc6-4692-83c2-575af38492c8" role="button" tabindex="0" aria-label="Open match djzelemhan versus goon">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/607242372719312961/e6413a86b0e0ae0cda049bb09fa3ece8.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">djzelemhan</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/960170719407382569/d5f43ac41f6cf70b1f9680551abeeeeb.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">goon</span>
+              </span>
+            </div>
+          </article>
+        </div>
+            </div>
+            <div class="bracket-link"></div>
+            
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="bd2fe29f-ab83-4f9a-a14f-bf39897741f5" role="button" tabindex="0" aria-label="Open match troubled_duck versus goon">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">troubled_duck</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/960170719407382569/d5f43ac41f6cf70b1f9680551abeeeeb.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">goon</span>
+              </span>
+            </div>
+          </article>
+        
+          </div>
+        </div>
+            </div>
+            <div class="bracket-link"></div>
+            
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="cf3748c0-731c-46c5-b9df-29d52d42a58c" role="button" tabindex="0" aria-label="Open match goof versus troubled_duck">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">goof</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">troubled_duck</span>
+              </span>
+            </div>
+          </article>
+        
+          </div>
+        </div></div>
+          <div class="bracket-center">
+            <div class="bracket-center-finals">
+              <div class="bracket-center-side-link"></div>
+              
+          <article class="bracket-match is-final  is-interactive" data-vs-trigger="true" data-match-id="d4dc8b7d-0f36-4281-a74b-df3339c69d33" role="button" tabindex="0" aria-label="Open match goof versus walsiii">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">goof</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">walsiii</span>
+              </span>
+            </div>
+          </article>
+        
+              <div class="bracket-center-side-link"></div>
+            </div>
+          </div>
+          <div class="bracket-side is-right"><div class="bracket-side-track is-right">
+          <div class="bracket-branch is-right" data-depth="3">
+            <div class="bracket-children">
+              <div class="bracket-child">
+          <div class="bracket-branch is-right" data-depth="2">
+            <div class="bracket-children">
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="afe155b5-0974-4f02-829c-8a6456ef2bdc" role="button" tabindex="0" aria-label="Open match wikentens versus fuze">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/634426181793349652/4210b37fb20e889cd4ba45b45cd145a8.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">wikentens</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">fuze</span>
+              </span>
+            </div>
+          </article>
+        </div>
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="c997c374-6ba7-4c81-9955-4e3bf3612501" role="button" tabindex="0" aria-label="Open match koshszn versus Hante">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/432279612572303370/926fd77c4876517832eb4ce799da85c3.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">koshszn</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1321510684189655060/9a6fbaa786c4316b12826f1b66e106aa.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">Hante</span>
+              </span>
+            </div>
+          </article>
+        </div>
+            </div>
+            <div class="bracket-link"></div>
+            
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="562896e2-3ee4-423e-9265-e7189024c1f9" role="button" tabindex="0" aria-label="Open match Fuze versus Hante">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">Fuze</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1321510684189655060/9a6fbaa786c4316b12826f1b66e106aa.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">Hante</span>
+              </span>
+            </div>
+          </article>
+        
+          </div>
+        </div>
+              <div class="bracket-child">
+          <div class="bracket-branch is-right" data-depth="2">
+            <div class="bracket-children">
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="a0bc91a3-1be9-4bf4-af6d-365e6e4df3b0" role="button" tabindex="0" aria-label="Open match El Cranéo versus bluexamasu">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/739388055546232893/7751079f928efe771e8c22af38677112.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">El Cranéo</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1224486850903802038/ede0a08c8b7fcc4d6cd3363a6079ac27.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">bluexamasu</span>
+              </span>
+            </div>
+          </article>
+        </div>
+              <div class="bracket-child">
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="8a21b9d0-a667-4b06-9807-729284419231" role="button" tabindex="0" aria-label="Open match walsiii versus bynexn">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">walsiii</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/744546636608569384/01eab0ff7a607090f921735e02c4d63d.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">bynexn</span>
+              </span>
+            </div>
+          </article>
+        </div>
+            </div>
+            <div class="bracket-link"></div>
+            
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="ba839109-0570-4f54-b623-bcd1bb725fbb" role="button" tabindex="0" aria-label="Open match xamasu versus walsiii">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/1224486850903802038/ede0a08c8b7fcc4d6cd3363a6079ac27.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">xamasu</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">walsiii</span>
+              </span>
+            </div>
+          </article>
+        
+          </div>
+        </div>
+            </div>
+            <div class="bracket-link"></div>
+            
+          <article class="bracket-match   is-interactive" data-vs-trigger="true" data-match-id="2e9a30c9-1ba9-4309-8ec1-2724fadaa0b2" role="button" tabindex="0" aria-label="Open match fuze versus walsiii">
+            <div class="bracket-slot is-top shift-left  has-visual">
+              <span class="bracket-slot-visual is-right" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">fuze</span>
+              </span>
+            </div>
+            <div class="bracket-slot shift-right  has-visual">
+              <span class="bracket-slot-visual is-left" aria-hidden="true"><img src="https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png" alt="" loading="lazy" decoding="async" /></span>
+              <span class="bracket-slot-main">
+                <span class="bracket-slot-name">walsiii</span>
+              </span>
+            </div>
+          </article>
+        
+          </div>
+        </div></div>
+        
+        </div> </div> </div> <div id="bracket-stub" class="w-full hidden"> <p class="text-[clamp(1rem,2.1vw,1.5rem)] text-white text-center max-w-275 mx-auto uppercase leading-tight">
 Here you'll be able to follow the tournament, view each participant's
           work and rate them.
-</p> </div> </div> </div>  <script type="module" src="_astro/Bracket.astro_astro_type_script_index_0_lang.By8uBWsx.js"></script>  </div> <section id="sponsors" class="w-full px-5 pb-12 pt-10 md:pt-14 text-white flex flex-col items-center justify-start gap-12 md:gap-14"> <div id="sponsors-reveal" class="w-full flex flex-col items-center"> <h2 class="text-center uppercase font-medium leading-none tracking-[-0.05em] text-[clamp(2.4rem,5.2vw,75px)]"> <span class="word-clip" style="--word-index:0;"> <span class="word-inner">Sponsors</span> </span> </h2> <p class="mt-2 text-center uppercase font-light leading-tight tracking-[-0.01em] text-[clamp(0.8rem,1vw,1.45rem)]"> <span class="word-clip" style="--word-index:1;"> <span class="word-inner">Official</span> </span><span class="word-clip" style="--word-index:2;"> <span class="word-inner">partners</span> </span><span class="word-clip" style="--word-index:3;"> <span class="word-inner">contributing</span> </span><span class="word-clip" style="--word-index:4;"> <span class="word-inner">to</span> </span><span class="word-clip" style="--word-index:5;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:6;"> <span class="word-inner">tournament&#39;s</span> </span><span class="word-clip" style="--word-index:7;"> <span class="word-inner">growth</span> </span> </p> <ul class="sponsors-list w-full max-w-[960px] mx-auto mt-8 mb-8 flex items-center justify-center gap-x-8 gap-y-5 text-center leading-[1.22] tracking-[-0.01em] text-[clamp(1.35rem,2.2vw,2.7rem)]"> <li class="list-none"> <a href="https://animeclips.online/" target="_blank" rel="noopener noreferrer" class="word-clip inline-block" style="--word-index:8;"> <img class="word-inner sponsor-logo" src="sponsors/anime-clips.png" alt="Anime Clips"> </a> </li><li class="list-none"> <a href="https://www.youtube.com/@trash-gang" target="_blank" rel="noopener noreferrer" class="word-clip inline-block" style="--word-index:9;"> <img class="word-inner sponsor-logo" src="sponsors/trash-gang.png" alt="ＴＲＡＳＨ 新 ドラゴン"> </a> </li> </ul> <p class="w-full max-w-[1380px] text-center uppercase font-light tracking-[-0.01em] leading-tight text-[clamp(0.82rem,1.02vw,1.5rem)]"> <span class="word-clip" style="--word-index:10;"> <span class="word-inner">If</span> </span><span class="word-clip" style="--word-index:11;"> <span class="word-inner">you</span> </span><span class="word-clip" style="--word-index:12;"> <span class="word-inner">are</span> </span><span class="word-clip" style="--word-index:13;"> <span class="word-inner">interested</span> </span><span class="word-clip" style="--word-index:14;"> <span class="word-inner">in</span> </span><span class="word-clip" style="--word-index:15;"> <span class="word-inner">contributing</span> </span><span class="word-clip" style="--word-index:16;"> <span class="word-inner">to</span> </span><span class="word-clip" style="--word-index:17;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:18;"> <span class="word-inner">prize</span> </span><span class="word-clip" style="--word-index:19;"> <span class="word-inner">pool</span> </span><span class="word-clip" style="--word-index:20;"> <span class="word-inner">or</span> </span><span class="word-clip" style="--word-index:21;"> <span class="word-inner">partnering</span> </span><span class="word-clip" style="--word-index:22;"> <span class="word-inner">with</span> </span><span class="word-clip" style="--word-index:23;"> <span class="word-inner">us</span> </span><span class="word-clip" style="--word-index:24;"> <span class="word-inner">as</span> </span><span class="word-clip" style="--word-index:25;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:26;"> <span class="word-inner">sponsor,</span> </span><span class="word-clip" style="--word-index:27;"> <span class="word-inner">reach</span> </span><span class="word-clip" style="--word-index:28;"> <span class="word-inner">out</span> </span><span class="word-clip" style="--word-index:29;"> <span class="word-inner">via</span> </span><span class="word-clip" style="--word-index:30;"> <span class="word-inner">Discord:</span> </span><span class="word-clip" style="--word-index:31;"> <span class="word-inner">@flizodt</span> </span><span class="word-clip" style="--word-index:32;"> <span class="word-inner">or</span> </span><span class="word-clip" style="--word-index:33;"> <span class="word-inner">by</span> </span><span class="word-clip" style="--word-index:34;"> <span class="word-inner">email:</span> </span><span class="word-clip" style="--word-index:35;"> <span class="word-inner">newgenunit.official@gmail.com.</span> </span> </p> </div> </section>  <script type="module" src="_astro/Sponsors.astro_astro_type_script_index_0_lang.kMc95YVg.js"></script> <div class="flex flex-col gap-12.5 pt-12 md:pt-16" id="about" data-astro-cid-rsd2vusr> <h2 class="block-title text-white text-center" data-astro-cid-rsd2vusr> About </h2>  <div id="about-reveal"> <p id="about-heading" class="px-4 text-[clamp(2rem,8.6vw,8rem)] font-bold text-white text-center max-w-345 mx-auto uppercase leading-[0.96]"> <span class="word-clip" style="--word-index:0;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:1;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:2;"> <span class="word-inner">is</span> </span><span class="word-clip" style="--word-index:3;"> <span class="word-inner">simply</span> </span><span class="word-clip" style="--word-index:4;"> <span class="word-inner">dummy</span> </span><span class="word-clip" style="--word-index:5;"> <span class="word-inner">text</span> </span><span class="word-clip" style="--word-index:6;"> <span class="word-inner">of</span> </span><span class="word-clip" style="--word-index:7;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:8;"> <span class="word-inner">printing</span> </span><span class="word-clip" style="--word-index:9;"> <span class="word-inner">and</span> </span><span class="word-clip" style="--word-index:10;"> <span class="word-inner">typesetting</span> </span><span class="word-clip" style="--word-index:11;"> <span class="word-inner">industry.</span> </span><span class="word-clip" style="--word-index:12;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:13;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:14;"> <span class="word-inner">has</span> </span><span class="word-clip" style="--word-index:15;"> <span class="word-inner">been</span> </span><span class="word-clip" style="--word-index:16;"> <span class="word-inner">the</span> </span> </p> <p id="about-body" class="px-4 text-[clamp(0.95rem,1.8vw,1.5rem)] text-white text-center max-w-275 mx-auto mt-4 md:mt-7.5 leading-tight font-medium"> <span class="word-clip" style="--word-index:17;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:18;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:19;"> <span class="word-inner">is</span> </span><span class="word-clip" style="--word-index:20;"> <span class="word-inner">simply</span> </span><span class="word-clip" style="--word-index:21;"> <span class="word-inner">dummy</span> </span><span class="word-clip" style="--word-index:22;"> <span class="word-inner">text</span> </span><span class="word-clip" style="--word-index:23;"> <span class="word-inner">of</span> </span><span class="word-clip" style="--word-index:24;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:25;"> <span class="word-inner">printing</span> </span><span class="word-clip" style="--word-index:26;"> <span class="word-inner">and</span> </span><span class="word-clip" style="--word-index:27;"> <span class="word-inner">typesetting</span> </span><span class="word-clip" style="--word-index:28;"> <span class="word-inner">industry.</span> </span><span class="word-clip" style="--word-index:29;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:30;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:31;"> <span class="word-inner">has</span> </span><span class="word-clip" style="--word-index:32;"> <span class="word-inner">been</span> </span><span class="word-clip" style="--word-index:33;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:34;"> <span class="word-inner">industry&#39;s</span> </span><span class="word-clip" style="--word-index:35;"> <span class="word-inner">standard</span> </span><span class="word-clip" style="--word-index:36;"> <span class="word-inner">dummy</span> </span><span class="word-clip" style="--word-index:37;"> <span class="word-inner">text</span> </span><span class="word-clip" style="--word-index:38;"> <span class="word-inner">ever</span> </span><span class="word-clip" style="--word-index:39;"> <span class="word-inner">since</span> </span><span class="word-clip" style="--word-index:40;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:41;"> <span class="word-inner">1500s,</span> </span><span class="word-clip" style="--word-index:42;"> <span class="word-inner">when</span> </span><span class="word-clip" style="--word-index:43;"> <span class="word-inner">an</span> </span><span class="word-clip" style="--word-index:44;"> <span class="word-inner">unknown</span> </span><span class="word-clip" style="--word-index:45;"> <span class="word-inner">printer</span> </span><span class="word-clip" style="--word-index:46;"> <span class="word-inner">took</span> </span><span class="word-clip" style="--word-index:47;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:48;"> <span class="word-inner">galley</span> </span><span class="word-clip" style="--word-index:49;"> <span class="word-inner">of</span> </span><span class="word-clip" style="--word-index:50;"> <span class="word-inner">type</span> </span><span class="word-clip" style="--word-index:51;"> <span class="word-inner">and</span> </span><span class="word-clip" style="--word-index:52;"> <span class="word-inner">scrambled</span> </span><span class="word-clip" style="--word-index:53;"> <span class="word-inner">it</span> </span><span class="word-clip" style="--word-index:54;"> <span class="word-inner">to</span> </span><span class="word-clip" style="--word-index:55;"> <span class="word-inner">make</span> </span><span class="word-clip" style="--word-index:56;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:57;"> <span class="word-inner">type</span> </span><span class="word-clip" style="--word-index:58;"> <span class="word-inner">specimen</span> </span><span class="word-clip" style="--word-index:59;"> <span class="word-inner">book.</span> </span> </p> </div>  <script type="module" src="_astro/About.astro_astro_type_script_index_0_lang.DRiQXxsm.js"></script>  </div> <div class="flex flex-col gap-12.5 pt-[126px]" id="rounds" data-astro-cid-rsd2vusr> <h2 class="block-title text-white text-left" data-astro-cid-rsd2vusr> rounds </h2>  <div id="rounds-reveal" class="grid gap-8 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] 2xl:[grid-template-columns:repeat(5,minmax(280px,1fr))]"> <div class="round-card flex flex-col gap-[40px] items-start justify-center w-full max-w-[280px]" style="--round-index:0;"> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[75px] text-white">1</p> <p class="text-[24px] text-white uppercase"> 23.03-05.04 - 14 days
+</p> </div> </div> </div>  <script src="_astro/bracket-data.js"></script>   </div>    <div class="flex flex-col gap-12.5 pt-12 md:pt-16" id="about" data-astro-cid-rsd2vusr> <h2 class="block-title text-white text-center" data-astro-cid-rsd2vusr> About </h2>  <div id="about-reveal"> <p id="about-heading" class="px-4 text-[clamp(2rem,8.6vw,8rem)] font-bold text-white text-center max-w-345 mx-auto uppercase leading-[0.96]"> <span class="word-clip" style="--word-index:0;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:1;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:2;"> <span class="word-inner">is</span> </span><span class="word-clip" style="--word-index:3;"> <span class="word-inner">simply</span> </span><span class="word-clip" style="--word-index:4;"> <span class="word-inner">dummy</span> </span><span class="word-clip" style="--word-index:5;"> <span class="word-inner">text</span> </span><span class="word-clip" style="--word-index:6;"> <span class="word-inner">of</span> </span><span class="word-clip" style="--word-index:7;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:8;"> <span class="word-inner">printing</span> </span><span class="word-clip" style="--word-index:9;"> <span class="word-inner">and</span> </span><span class="word-clip" style="--word-index:10;"> <span class="word-inner">typesetting</span> </span><span class="word-clip" style="--word-index:11;"> <span class="word-inner">industry.</span> </span><span class="word-clip" style="--word-index:12;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:13;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:14;"> <span class="word-inner">has</span> </span><span class="word-clip" style="--word-index:15;"> <span class="word-inner">been</span> </span><span class="word-clip" style="--word-index:16;"> <span class="word-inner">the</span> </span> </p> <p id="about-body" class="px-4 text-[clamp(0.95rem,1.8vw,1.5rem)] text-white text-center max-w-275 mx-auto mt-4 md:mt-7.5 leading-tight font-medium"> <span class="word-clip" style="--word-index:17;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:18;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:19;"> <span class="word-inner">is</span> </span><span class="word-clip" style="--word-index:20;"> <span class="word-inner">simply</span> </span><span class="word-clip" style="--word-index:21;"> <span class="word-inner">dummy</span> </span><span class="word-clip" style="--word-index:22;"> <span class="word-inner">text</span> </span><span class="word-clip" style="--word-index:23;"> <span class="word-inner">of</span> </span><span class="word-clip" style="--word-index:24;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:25;"> <span class="word-inner">printing</span> </span><span class="word-clip" style="--word-index:26;"> <span class="word-inner">and</span> </span><span class="word-clip" style="--word-index:27;"> <span class="word-inner">typesetting</span> </span><span class="word-clip" style="--word-index:28;"> <span class="word-inner">industry.</span> </span><span class="word-clip" style="--word-index:29;"> <span class="word-inner">Lorem</span> </span><span class="word-clip" style="--word-index:30;"> <span class="word-inner">Ipsum</span> </span><span class="word-clip" style="--word-index:31;"> <span class="word-inner">has</span> </span><span class="word-clip" style="--word-index:32;"> <span class="word-inner">been</span> </span><span class="word-clip" style="--word-index:33;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:34;"> <span class="word-inner">industry&#39;s</span> </span><span class="word-clip" style="--word-index:35;"> <span class="word-inner">standard</span> </span><span class="word-clip" style="--word-index:36;"> <span class="word-inner">dummy</span> </span><span class="word-clip" style="--word-index:37;"> <span class="word-inner">text</span> </span><span class="word-clip" style="--word-index:38;"> <span class="word-inner">ever</span> </span><span class="word-clip" style="--word-index:39;"> <span class="word-inner">since</span> </span><span class="word-clip" style="--word-index:40;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:41;"> <span class="word-inner">1500s,</span> </span><span class="word-clip" style="--word-index:42;"> <span class="word-inner">when</span> </span><span class="word-clip" style="--word-index:43;"> <span class="word-inner">an</span> </span><span class="word-clip" style="--word-index:44;"> <span class="word-inner">unknown</span> </span><span class="word-clip" style="--word-index:45;"> <span class="word-inner">printer</span> </span><span class="word-clip" style="--word-index:46;"> <span class="word-inner">took</span> </span><span class="word-clip" style="--word-index:47;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:48;"> <span class="word-inner">galley</span> </span><span class="word-clip" style="--word-index:49;"> <span class="word-inner">of</span> </span><span class="word-clip" style="--word-index:50;"> <span class="word-inner">type</span> </span><span class="word-clip" style="--word-index:51;"> <span class="word-inner">and</span> </span><span class="word-clip" style="--word-index:52;"> <span class="word-inner">scrambled</span> </span><span class="word-clip" style="--word-index:53;"> <span class="word-inner">it</span> </span><span class="word-clip" style="--word-index:54;"> <span class="word-inner">to</span> </span><span class="word-clip" style="--word-index:55;"> <span class="word-inner">make</span> </span><span class="word-clip" style="--word-index:56;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:57;"> <span class="word-inner">type</span> </span><span class="word-clip" style="--word-index:58;"> <span class="word-inner">specimen</span> </span><span class="word-clip" style="--word-index:59;"> <span class="word-inner">book.</span> </span> </p> </div>    </div> <div class="flex flex-col gap-12.5 pt-[126px]" id="rounds" data-astro-cid-rsd2vusr> <h2 class="block-title text-white text-left" data-astro-cid-rsd2vusr> rounds </h2>  <div id="rounds-reveal" class="grid gap-8 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))] 2xl:[grid-template-columns:repeat(5,minmax(280px,1fr))]"> <div class="round-card flex flex-col gap-[40px] items-start justify-center w-full max-w-[280px]" style="--round-index:0;"> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[75px] text-white">1</p> <p class="text-[24px] text-white uppercase"> 23.03-05.04 - 14 days
 </p> </div> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[24px] text-white uppercase">JUDGE</p> <p class="text-[24px] text-white uppercase"> 06.04-08.04 - 3 days
 </p> </div> </div><div class="round-card flex flex-col gap-[40px] items-start justify-center w-full max-w-[280px]" style="--round-index:1;"> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[75px] text-white">2</p> <p class="text-[24px] text-white uppercase"> 09.04-24.04 - 15 days
 </p> </div> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[24px] text-white uppercase">JUDGE</p> <p class="text-[24px] text-white uppercase"> 25.04-26.04 - 2 days
@@ -211,7 +801,7 @@ Here you'll be able to follow the tournament, view each participant's
 </p> </div> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[24px] text-white uppercase">JUDGE</p> <p class="text-[24px] text-white uppercase"> 13.06-14.06 - 2 days
 </p> </div> </div><div class="round-card flex flex-col gap-[40px] items-start justify-center w-full max-w-[280px]" style="--round-index:4;"> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[75px] text-white">5</p> <p class="text-[24px] text-white uppercase"> 15.06-17.07 - 32 days
 </p> </div> <div class="flex flex-col gap-[5px] items-start justify-center"> <p class="text-[24px] text-white uppercase">JUDGE</p> <p class="text-[24px] text-white uppercase"> 18.07-19.07 - 2 days
-</p> </div> </div> </div>  <script type="module" src="_astro/Rounds.astro_astro_type_script_index_0_lang.DyZ9KqsY.js"></script>  </div> <section id="special-thanks" class="w-full min-h-[82dvh] px-5 pb-12 pt-28 text-white flex flex-col items-center justify-start gap-12 md:gap-14"> <div id="special-thanks-reveal" class="w-full flex flex-col items-center"> <h2 class="text-center uppercase font-medium leading-none tracking-[-0.05em] text-[clamp(2.4rem,5.2vw,75px)]"> <span class="word-clip" style="--word-index:0;"> <span class="word-inner">Special</span> </span><span class="word-clip" style="--word-index:1;"> <span class="word-inner">Thanks</span> </span> </h2> <p class="mt-2 text-center uppercase font-light leading-tight tracking-[-0.01em] text-[clamp(0.8rem,1vw,1.45rem)]"> <span class="word-clip" style="--word-index:2;"> <span class="word-inner">To</span> </span><span class="word-clip" style="--word-index:3;"> <span class="word-inner">everyone</span> </span><span class="word-clip" style="--word-index:4;"> <span class="word-inner">who</span> </span><span class="word-clip" style="--word-index:5;"> <span class="word-inner">helped</span> </span><span class="word-clip" style="--word-index:6;"> <span class="word-inner">support</span> </span><span class="word-clip" style="--word-index:7;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:8;"> <span class="word-inner">prize</span> </span><span class="word-clip" style="--word-index:9;"> <span class="word-inner">pool</span> </span> </p> <ul class="w-full max-w-[720px] mx-auto mt-3 mb-3 text-center leading-[1.22] tracking-[-0.01em] text-[clamp(1.35rem,2.2vw,2.7rem)]"> <li> <a href="https://www.instagram.com/ckie33/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:10;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> ckie </span> </a> </li><li> <a href="https://www.instagram.com/saradov.hj/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:11;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> saradov </span> </a> </li><li> <a href="https://www.instagram.com/n1krus_aep/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:12;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> n1 </span> </a> </li><li> <a href="https://www.instagram.com/hydrroxide/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:13;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> hydroxide </span> </a> </li><li> <a href="https://www.instagram.com/torro.ixq/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:14;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> torro </span> </a> </li><li> <a href="https://www.instagram.com/zelyobtw/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:15;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> zelyo </span> </a> </li><li> <a href="https://www.instagram.com/hexterna.ng/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:16;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> hexterna </span> </a> </li> </ul> <p class="w-full max-w-[1380px] text-center uppercase font-light tracking-[-0.01em] leading-tight text-[clamp(0.82rem,1.02vw,1.5rem)]"> <span class="word-clip" style="--word-index:17;"> <span class="word-inner">If</span> </span><span class="word-clip" style="--word-index:18;"> <span class="word-inner">you</span> </span><span class="word-clip" style="--word-index:19;"> <span class="word-inner">are</span> </span><span class="word-clip" style="--word-index:20;"> <span class="word-inner">interested</span> </span><span class="word-clip" style="--word-index:21;"> <span class="word-inner">in</span> </span><span class="word-clip" style="--word-index:22;"> <span class="word-inner">contributing</span> </span><span class="word-clip" style="--word-index:23;"> <span class="word-inner">to</span> </span><span class="word-clip" style="--word-index:24;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:25;"> <span class="word-inner">prize</span> </span><span class="word-clip" style="--word-index:26;"> <span class="word-inner">pool</span> </span><span class="word-clip" style="--word-index:27;"> <span class="word-inner">or</span> </span><span class="word-clip" style="--word-index:28;"> <span class="word-inner">partnering</span> </span><span class="word-clip" style="--word-index:29;"> <span class="word-inner">with</span> </span><span class="word-clip" style="--word-index:30;"> <span class="word-inner">us</span> </span><span class="word-clip" style="--word-index:31;"> <span class="word-inner">as</span> </span><span class="word-clip" style="--word-index:32;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:33;"> <span class="word-inner">sponsor,</span> </span><span class="word-clip" style="--word-index:34;"> <span class="word-inner">reach</span> </span><span class="word-clip" style="--word-index:35;"> <span class="word-inner">out</span> </span><span class="word-clip" style="--word-index:36;"> <span class="word-inner">via</span> </span><span class="word-clip" style="--word-index:37;"> <span class="word-inner">Discord:</span> </span><span class="word-clip" style="--word-index:38;"> <span class="word-inner">@flizodt</span> </span><span class="word-clip" style="--word-index:39;"> <span class="word-inner">or</span> </span><span class="word-clip" style="--word-index:40;"> <span class="word-inner">by</span> </span><span class="word-clip" style="--word-index:41;"> <span class="word-inner">email:</span> </span><span class="word-clip" style="--word-index:42;"> <span class="word-inner">newgenunit.official@gmail.com.</span> </span> </p> </div> </section>  <script type="module" src="_astro/SpecialThanks.astro_astro_type_script_index_0_lang.C9B1wXl3.js"></script> </div> <div id="application-modal" data-modal="application" class="fixed inset-0 z-[120] hidden items-center justify-center bg-black/75 backdrop-blur-sm" role="dialog" aria-modal="true" aria-hidden="true"> <div data-modal-panel class="mx-4 w-full max-w-[750px] border border-white/20 bg-black/95 p-[64px] md:p-10"> <button type="button" data-modal-close="application" class="ml-auto block border border-white/40 px-4 py-1 text-xs uppercase tracking-[0.2em] text-white/85 transition-colors hover:bg-white hover:text-black" aria-label="Close modal">
+</p> </div> </div> </div>    </div> <section id="special-thanks" class="w-full min-h-[82dvh] px-5 pb-12 pt-28 text-white flex flex-col items-center justify-start gap-12 md:gap-14"> <div id="special-thanks-reveal" class="w-full flex flex-col items-center"> <h2 class="text-center uppercase font-medium leading-none tracking-[-0.05em] text-[clamp(2.4rem,5.2vw,75px)]"> <span class="word-clip" style="--word-index:0;"> <span class="word-inner">Special</span> </span><span class="word-clip" style="--word-index:1;"> <span class="word-inner">Thanks</span> </span> </h2> <p class="mt-2 text-center uppercase font-light leading-tight tracking-[-0.01em] text-[clamp(0.8rem,1vw,1.45rem)]"> <span class="word-clip" style="--word-index:2;"> <span class="word-inner">To</span> </span><span class="word-clip" style="--word-index:3;"> <span class="word-inner">everyone</span> </span><span class="word-clip" style="--word-index:4;"> <span class="word-inner">who</span> </span><span class="word-clip" style="--word-index:5;"> <span class="word-inner">helped</span> </span><span class="word-clip" style="--word-index:6;"> <span class="word-inner">support</span> </span><span class="word-clip" style="--word-index:7;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:8;"> <span class="word-inner">prize</span> </span><span class="word-clip" style="--word-index:9;"> <span class="word-inner">pool</span> </span> </p> <ul class="w-full max-w-[720px] mx-auto mt-3 mb-3 text-center leading-[1.22] tracking-[-0.01em] text-[clamp(1.35rem,2.2vw,2.7rem)]"> <li> <a href="https://www.instagram.com/ckie33/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:10;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> ckie </span> </a> </li><li> <a href="https://www.instagram.com/saradov.hj/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:11;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> saradov </span> </a> </li><li> <a href="https://www.instagram.com/n1krus_aep/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:12;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> n1 </span> </a> </li><li> <a href="https://www.instagram.com/hydrroxide/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:13;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> hydroxide </span> </a> </li><li> <a href="https://www.instagram.com/torro.ixq/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:14;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> torro </span> </a> </li><li> <a href="https://www.instagram.com/zelyobtw/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:15;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> zelyo </span> </a> </li><li> <a href="https://www.instagram.com/hexterna.ng/" target="_blank" rel="noopener noreferrer" class="word-clip" style="--word-index:16;"> <span class="word-inner hover:text-white/70 transition-colors duration-300"> hexterna </span> </a> </li> </ul> <p class="w-full max-w-[1380px] text-center uppercase font-light tracking-[-0.01em] leading-tight text-[clamp(0.82rem,1.02vw,1.5rem)]"> <span class="word-clip" style="--word-index:17;"> <span class="word-inner">If</span> </span><span class="word-clip" style="--word-index:18;"> <span class="word-inner">you</span> </span><span class="word-clip" style="--word-index:19;"> <span class="word-inner">are</span> </span><span class="word-clip" style="--word-index:20;"> <span class="word-inner">interested</span> </span><span class="word-clip" style="--word-index:21;"> <span class="word-inner">in</span> </span><span class="word-clip" style="--word-index:22;"> <span class="word-inner">contributing</span> </span><span class="word-clip" style="--word-index:23;"> <span class="word-inner">to</span> </span><span class="word-clip" style="--word-index:24;"> <span class="word-inner">the</span> </span><span class="word-clip" style="--word-index:25;"> <span class="word-inner">prize</span> </span><span class="word-clip" style="--word-index:26;"> <span class="word-inner">pool</span> </span><span class="word-clip" style="--word-index:27;"> <span class="word-inner">or</span> </span><span class="word-clip" style="--word-index:28;"> <span class="word-inner">partnering</span> </span><span class="word-clip" style="--word-index:29;"> <span class="word-inner">with</span> </span><span class="word-clip" style="--word-index:30;"> <span class="word-inner">us</span> </span><span class="word-clip" style="--word-index:31;"> <span class="word-inner">as</span> </span><span class="word-clip" style="--word-index:32;"> <span class="word-inner">a</span> </span><span class="word-clip" style="--word-index:33;"> <span class="word-inner">sponsor,</span> </span><span class="word-clip" style="--word-index:34;"> <span class="word-inner">reach</span> </span><span class="word-clip" style="--word-index:35;"> <span class="word-inner">out</span> </span><span class="word-clip" style="--word-index:36;"> <span class="word-inner">via</span> </span><span class="word-clip" style="--word-index:37;"> <span class="word-inner">Discord:</span> </span><span class="word-clip" style="--word-index:38;"> <span class="word-inner">@flizodt</span> </span><span class="word-clip" style="--word-index:39;"> <span class="word-inner">or</span> </span><span class="word-clip" style="--word-index:40;"> <span class="word-inner">by</span> </span><span class="word-clip" style="--word-index:41;"> <span class="word-inner">email:</span> </span><span class="word-clip" style="--word-index:42;"> <span class="word-inner">newgenunit.official@gmail.com.</span> </span> </p> </div> </section>   </div> <div id="application-modal" data-modal="application" class="fixed inset-0 z-[120] hidden items-center justify-center bg-black/75 backdrop-blur-sm" role="dialog" aria-modal="true" aria-hidden="true"> <div data-modal-panel class="mx-4 w-full max-w-[750px] border border-white/20 bg-black/95 p-[64px] md:p-10"> <button type="button" data-modal-close="application" class="ml-auto block border border-white/40 px-4 py-1 text-xs uppercase tracking-[0.2em] text-white/85 transition-colors hover:bg-white hover:text-black" aria-label="Close modal">
 Close
 </button> <div class="mt-4">  <div class="mx-auto max-w-3xl text-white"> <h2 class="text-center text-[36px] uppercase tracking-[-0.05em] md:text-[48px]">
 Applications Closed
@@ -368,7 +958,7 @@ No description yet.
 PUBLISH
 </button> <p class="vs-screen__side-status is-hidden" data-field="side-status" aria-live="polite"></p> </div> </div> </div> <div class="vs-screen__criteria-help"> <div class="vs-screen__criteria-help-wrap"> <button type="button" class="vs-screen__criteria-help-trigger" aria-label="What does each criterion mean?">
 What does each criterion mean?
-</button> <div class="vs-screen__criteria-help-tooltip"> <ul class="vs-screen__criteria-help-list"> <li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">concept</p> <p class="vs-screen__criteria-help-text"> Reflects how well the author conveys a specific idea, concept, story, or emotion through their work. </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">individuality</p> <p class="vs-screen__criteria-help-text"> Reflects how unique the work is and how much it stands out from the majority. </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">execution</p> <p class="vs-screen__criteria-help-text"> The technical execution of the work (movement, VFX, SFX, etc.). </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">style implementation</p> <p class="vs-screen__criteria-help-text"> Shows how well the author executes the chosen style in the work — how well the edit fits and represents that specific style, rather than how good it looks in general. </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">overall</p> <p class="vs-screen__criteria-help-text"> The most important criterion of all. Reflects the viewer’s overall impression of the work. </p> </li> </ul> </div> </div> </div> </form> </section> <div class="vs-screen__divider" aria-hidden="true"> <span>VS</span> </div> </div> </div> </div> <script type="module" src="_astro/VsScreenModal.astro_astro_type_script_index_0_lang.BXoPRkcZ.js"></script> <script type="module" src="_astro/index.astro_astro_type_script_index_0_lang.Cv9zphZG.js"></script>  </main> <div> <img class="relative bottom-[-8px] px-3 w-full max-w-450 mx-auto" src="footer_newgen.svg" alt="NEWGEN"> <footer class="w-full px-3 md:px-18 py-5 bg-white"> <div class="max-w-450 w-full mx-auto grid grid-cols-1 gap-8 items-start sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch lg:gap-10"> <div class="decoration-transparent decoration-0 text-black text-[18px] leading-tight tracking-tight flex flex-col gap-3 sm:text-[20px] lg:text-[24px] lg:gap-7.5"> <span>NEWGEN</span> <span>TOURNAMENT</span> <span>2026</span> </div> <ol class="decoration-transparent decoration-0 text-black text-[18px] leading-tight tracking-tight flex flex-col gap-3 sm:text-[20px] lg:text-[24px] lg:gap-7.5"> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="rules/index.html">Rules</a> </li> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="index.html#bracker">Bracket</a> </li> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="index.html#about">About</a> </li> </ol> <ol class="decoration-transparent decoration-0 text-black text-[18px] leading-tight tracking-tight flex flex-col gap-3 sm:text-[20px] lg:text-[24px] lg:gap-7.5"> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="https://discord.gg/n3wg3n" target="_blank" rel="noopener noreferrer">
+</button> <div class="vs-screen__criteria-help-tooltip"> <ul class="vs-screen__criteria-help-list"> <li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">concept</p> <p class="vs-screen__criteria-help-text"> Reflects how well the author conveys a specific idea, concept, story, or emotion through their work. </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">individuality</p> <p class="vs-screen__criteria-help-text"> Reflects how unique the work is and how much it stands out from the majority. </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">execution</p> <p class="vs-screen__criteria-help-text"> The technical execution of the work (movement, VFX, SFX, etc.). </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">style implementation</p> <p class="vs-screen__criteria-help-text"> Shows how well the author executes the chosen style in the work — how well the edit fits and represents that specific style, rather than how good it looks in general. </p> </li><li class="vs-screen__criteria-help-item"> <p class="vs-screen__criteria-help-title">overall</p> <p class="vs-screen__criteria-help-text"> The most important criterion of all. Reflects the viewer’s overall impression of the work. </p> </li> </ul> </div> </div> </div> </form> </section> <div class="vs-screen__divider" aria-hidden="true"> <span>VS</span> </div> </div> </div> </div>    <script src="_astro/bundle.index.js"></script></main> <div> <img class="relative bottom-[-8px] px-3 w-full max-w-450 mx-auto" src="footer_newgen.svg" alt="NEWGEN"> <footer class="w-full px-3 md:px-18 py-5 bg-white"> <div class="max-w-450 w-full mx-auto grid grid-cols-1 gap-8 items-start sm:grid-cols-2 lg:grid-cols-4 lg:items-stretch lg:gap-10"> <div class="decoration-transparent decoration-0 text-black text-[18px] leading-tight tracking-tight flex flex-col gap-3 sm:text-[20px] lg:text-[24px] lg:gap-7.5"> <span>NEWGEN</span> <span>TOURNAMENT</span> <span>2026</span> </div> <ol class="decoration-transparent decoration-0 text-black text-[18px] leading-tight tracking-tight flex flex-col gap-3 sm:text-[20px] lg:text-[24px] lg:gap-7.5"> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="rules/index.html">Rules</a> </li> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="index.html#bracket">Bracket</a> </li> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="index.html#about">About</a> </li> </ol> <ol class="decoration-transparent decoration-0 text-black text-[18px] leading-tight tracking-tight flex flex-col gap-3 sm:text-[20px] lg:text-[24px] lg:gap-7.5"> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="https://discord.gg/n3wg3n" target="_blank" rel="noopener noreferrer">
 Discord
 </a> </li> <li> <a class="transition-colors duration-130 hover:text-black/70 hover:underline" href="https://www.instagram.com/newgen.unit/" target="_blank" rel="noopener noreferrer">
 Instagram

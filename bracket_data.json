@@ -1,0 +1,441 @@
+{
+  "rounds": [
+    {
+      "roundNumber": 1,
+      "title": "Round 1",
+      "conditions": "",
+      "juryRevealEnabled": true,
+      "matches": [
+        {
+          "id": "a67f4f7d-fa0a-4e9c-871d-8152afc7758a",
+          "roundNumber": 1,
+          "order": 1,
+          "participantA": {
+            "id": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+            "username": "goof21",
+            "nickname": "goof21",
+            "instagram": "https://www.instagram.com/goofyatwood/",
+            "youtube": "https://www.youtube.com/@goofyatwood",
+            "avatar": "https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "d5365036-d2df-42fa-bb8f-33e46bdc053d",
+            "username": "khalidv2.",
+            "nickname": "khalidv2.",
+            "instagram": null,
+            "youtube": null,
+            "avatar": "https://cdn.discordapp.com/avatars/1483876630270050436/77ecef8c4490049e46a5855d62421b32.png",
+            "hasSubmission": true
+          },
+          "winnerId": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+          "scoreA": 64.18,
+          "scoreB": 63.89,
+          "status": "FINISHED"
+        },
+        {
+          "id": "4a0cfe42-e450-49fe-a269-be687ebcdd6e",
+          "roundNumber": 1,
+          "order": 2,
+          "participantA": {
+            "id": "5e287aac-5725-4708-82a2-6b5e6299eb07",
+            "username": "strezelia",
+            "nickname": "seb",
+            "instagram": null,
+            "youtube": null,
+            "avatar": "https://cdn.discordapp.com/avatars/319574305274986498/bf19d0bd23a09463fc70c165c01ac4d7.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "d536cd2e-fad2-469f-b660-078a2359e435",
+            "username": "pola",
+            "nickname": "pola",
+            "instagram": "https://www.instagram.com/pola.on/?hl=fr",
+            "youtube": "https://www.youtube.com/@thispolaa",
+            "avatar": "https://cdn.discordapp.com/avatars/140412016522166272/f114e2de830842c469657e0da4be9dff.png",
+            "hasSubmission": true
+          },
+          "winnerId": "d536cd2e-fad2-469f-b660-078a2359e435",
+          "scoreA": 52.04,
+          "scoreB": 61.12,
+          "status": "FINISHED"
+        },
+        {
+          "id": "5b27226c-337e-4e4f-825e-72f290dc0be1",
+          "roundNumber": 1,
+          "order": 3,
+          "participantA": {
+            "id": "a1bdd623-4057-4d73-8ccc-e909fc35212d",
+            "username": "troubled_duck",
+            "nickname": "troubled_duck",
+            "instagram": null,
+            "youtube": "https://www.youtube.com/@troubled_duck",
+            "avatar": "https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "702bb18e-ba8d-41c0-973d-f1f334c313d7",
+            "username": "vovanddroes",
+            "nickname": "plugdi",
+            "instagram": "https://www.instagram.com/thisisplugdi/",
+            "youtube": "https://www.youtube.com/@plugDi2",
+            "avatar": "https://cdn.discordapp.com/avatars/395873307850833921/198fa433114e1b9399fe211471c22540.png",
+            "hasSubmission": true
+          },
+          "winnerId": "a1bdd623-4057-4d73-8ccc-e909fc35212d",
+          "scoreA": 81.88,
+          "scoreB": 64.02,
+          "status": "FINISHED"
+        },
+        {
+          "id": "1379a0e0-bcc6-4692-83c2-575af38492c8",
+          "roundNumber": 1,
+          "order": 4,
+          "participantA": {
+            "id": "e989953d-c020-42d5-a53d-d76f8ba6629b",
+            "username": "djzelemhan",
+            "nickname": "djzelemhan",
+            "instagram": "https://www.instagram.com/zelyobtw?igsh=bHExeDNscXh1Mjhl&utm_source=qr",
+            "youtube": "https://www.youtube.com/@zelyobtw",
+            "avatar": "https://cdn.discordapp.com/avatars/607242372719312961/e6413a86b0e0ae0cda049bb09fa3ece8.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "533ad40e-39f2-49f4-abe2-8fdd6c28f755",
+            "username": "lucas19471",
+            "nickname": "goon",
+            "instagram": "https://www.instagram.com/goon._900/",
+            "youtube": "https://www.youtube.com/@Goon_900",
+            "avatar": "https://cdn.discordapp.com/avatars/960170719407382569/d5f43ac41f6cf70b1f9680551abeeeeb.png",
+            "hasSubmission": true
+          },
+          "winnerId": "533ad40e-39f2-49f4-abe2-8fdd6c28f755",
+          "scoreA": 61.46,
+          "scoreB": 83.22,
+          "status": "FINISHED"
+        },
+        {
+          "id": "afe155b5-0974-4f02-829c-8a6456ef2bdc",
+          "roundNumber": 1,
+          "order": 5,
+          "participantA": {
+            "id": "7977cd54-ac67-4bfe-810b-5d35348a56b5",
+            "username": "wikentens",
+            "nickname": "wikentens",
+            "instagram": "https://www.instagram.com/wikentens/",
+            "youtube": null,
+            "avatar": "https://cdn.discordapp.com/avatars/634426181793349652/4210b37fb20e889cd4ba45b45cd145a8.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "1f3d1a65-62d1-4f3e-b53a-06cf782df142",
+            "username": "shxrtfuze",
+            "nickname": "fuze",
+            "instagram": "https://www.instagram.com/shxrtfuze/",
+            "youtube": "https://www.youtube.com/@ShxrtFuze",
+            "avatar": "https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png",
+            "hasSubmission": true
+          },
+          "winnerId": "1f3d1a65-62d1-4f3e-b53a-06cf782df142",
+          "scoreA": 55.4,
+          "scoreB": 63.95,
+          "status": "FINISHED"
+        },
+        {
+          "id": "c997c374-6ba7-4c81-9955-4e3bf3612501",
+          "roundNumber": 1,
+          "order": 6,
+          "participantA": {
+            "id": "8043409d-c2b9-4759-ab36-10c3828de75d",
+            "username": "koshszn",
+            "nickname": "koshszn",
+            "instagram": null,
+            "youtube": null,
+            "avatar": "https://cdn.discordapp.com/avatars/432279612572303370/926fd77c4876517832eb4ce799da85c3.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "df675360-8892-4940-901a-6bbf783d6ff6",
+            "username": "hantezone",
+            "nickname": "Hante",
+            "instagram": "https://www.instagram.com/hantezone/",
+            "youtube": "https://www.youtube.com/@hantezone",
+            "avatar": "https://cdn.discordapp.com/avatars/1321510684189655060/9a6fbaa786c4316b12826f1b66e106aa.png",
+            "hasSubmission": true
+          },
+          "winnerId": "df675360-8892-4940-901a-6bbf783d6ff6",
+          "scoreA": 54.97,
+          "scoreB": 70.86,
+          "status": "FINISHED"
+        },
+        {
+          "id": "a0bc91a3-1be9-4bf4-af6d-365e6e4df3b0",
+          "roundNumber": 1,
+          "order": 7,
+          "participantA": {
+            "id": "f1676313-574f-47a1-8fc1-d39726f70b55",
+            "username": "sku1l8",
+            "nickname": "El Cranéo",
+            "instagram": "https://www.instagram.com/sku1l8/",
+            "youtube": "https://www.youtube.com/@sku1l8ong",
+            "avatar": "https://cdn.discordapp.com/avatars/739388055546232893/7751079f928efe771e8c22af38677112.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "306ed306-ff88-4010-9ff1-943c39776b11",
+            "username": "bluexamasu",
+            "nickname": "bluexamasu",
+            "instagram": "https://www.instagram.com/xamasu.am",
+            "youtube": "https://youtube.com/@bluexamasu",
+            "avatar": "https://cdn.discordapp.com/avatars/1224486850903802038/ede0a08c8b7fcc4d6cd3363a6079ac27.png",
+            "hasSubmission": true
+          },
+          "winnerId": "306ed306-ff88-4010-9ff1-943c39776b11",
+          "scoreA": 55.47,
+          "scoreB": 71.81,
+          "status": "FINISHED"
+        },
+        {
+          "id": "8a21b9d0-a667-4b06-9807-729284419231",
+          "roundNumber": 1,
+          "order": 8,
+          "participantA": {
+            "id": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+            "username": "walsiii",
+            "nickname": "walsiii",
+            "instagram": "https://instagram.com/w6lxy",
+            "youtube": "https://youtube.com/@walsiiiii",
+            "avatar": "https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "3a1a229e-3dc3-4e8f-bce7-b5fbae3f8ac9",
+            "username": "bynexn",
+            "nickname": "bynexn",
+            "instagram": "https://www.instagram.com/bynexn/",
+            "youtube": "https://www.youtube.com/@bynexn",
+            "avatar": "https://cdn.discordapp.com/avatars/744546636608569384/01eab0ff7a607090f921735e02c4d63d.png",
+            "hasSubmission": true
+          },
+          "winnerId": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+          "scoreA": 75.41,
+          "scoreB": 49.25,
+          "status": "FINISHED"
+        }
+      ]
+    },
+    {
+      "roundNumber": 2,
+      "title": "Quarterfinal",
+      "conditions": "",
+      "juryRevealEnabled": true,
+      "matches": [
+        {
+          "id": "499ee237-3fbf-4fe0-8163-55bdb35faf80",
+          "roundNumber": 2,
+          "order": 1,
+          "participantA": {
+            "id": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+            "username": "goof21",
+            "nickname": "goof",
+            "instagram": "https://www.instagram.com/goofyatwood/",
+            "youtube": "https://www.youtube.com/@goofyatwood",
+            "avatar": "https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "d536cd2e-fad2-469f-b660-078a2359e435",
+            "username": "pola",
+            "nickname": "pola",
+            "instagram": "https://www.instagram.com/pola.on/?hl=fr",
+            "youtube": "https://www.youtube.com/@thispolaa",
+            "avatar": "https://cdn.discordapp.com/avatars/140412016522166272/f114e2de830842c469657e0da4be9dff.png",
+            "hasSubmission": true
+          },
+          "winnerId": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+          "scoreA": 73.93,
+          "scoreB": 58.42,
+          "status": "FINISHED"
+        },
+        {
+          "id": "bd2fe29f-ab83-4f9a-a14f-bf39897741f5",
+          "roundNumber": 2,
+          "order": 2,
+          "participantA": {
+            "id": "a1bdd623-4057-4d73-8ccc-e909fc35212d",
+            "username": "troubled_duck",
+            "nickname": "troubled_duck",
+            "instagram": null,
+            "youtube": "https://www.youtube.com/@troubled_duck",
+            "avatar": "https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "533ad40e-39f2-49f4-abe2-8fdd6c28f755",
+            "username": "lucas19471",
+            "nickname": "goon",
+            "instagram": "https://www.instagram.com/goon._900/",
+            "youtube": "https://www.youtube.com/@Goon_900",
+            "avatar": "https://cdn.discordapp.com/avatars/960170719407382569/d5f43ac41f6cf70b1f9680551abeeeeb.png",
+            "hasSubmission": true
+          },
+          "winnerId": "a1bdd623-4057-4d73-8ccc-e909fc35212d",
+          "scoreA": 78.63,
+          "scoreB": 78.05,
+          "status": "FINISHED"
+        },
+        {
+          "id": "562896e2-3ee4-423e-9265-e7189024c1f9",
+          "roundNumber": 2,
+          "order": 3,
+          "participantA": {
+            "id": "1f3d1a65-62d1-4f3e-b53a-06cf782df142",
+            "username": "shxrtfuze",
+            "nickname": "Fuze",
+            "instagram": "https://www.instagram.com/shxrtfuze/",
+            "youtube": "https://www.youtube.com/@ShxrtFuze",
+            "avatar": "https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "df675360-8892-4940-901a-6bbf783d6ff6",
+            "username": "hantezone",
+            "nickname": "Hante",
+            "instagram": "https://www.instagram.com/hantezone/",
+            "youtube": "https://www.youtube.com/@hantezone",
+            "avatar": "https://cdn.discordapp.com/avatars/1321510684189655060/9a6fbaa786c4316b12826f1b66e106aa.png",
+            "hasSubmission": true
+          },
+          "winnerId": "1f3d1a65-62d1-4f3e-b53a-06cf782df142",
+          "scoreA": 70.72,
+          "scoreB": 12.03,
+          "status": "FINISHED"
+        },
+        {
+          "id": "ba839109-0570-4f54-b623-bcd1bb725fbb",
+          "roundNumber": 2,
+          "order": 4,
+          "participantA": {
+            "id": "306ed306-ff88-4010-9ff1-943c39776b11",
+            "username": "bluexamasu",
+            "nickname": "xamasu",
+            "instagram": "https://www.instagram.com/xamasu.am",
+            "youtube": "https://youtube.com/@bluexamasu",
+            "avatar": "https://cdn.discordapp.com/avatars/1224486850903802038/ede0a08c8b7fcc4d6cd3363a6079ac27.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+            "username": "walsiii",
+            "nickname": "walsiii",
+            "instagram": "https://instagram.com/w6lxy",
+            "youtube": "https://youtube.com/@walsiiiii",
+            "avatar": "https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png",
+            "hasSubmission": true
+          },
+          "winnerId": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+          "scoreA": 70.35,
+          "scoreB": 76.66,
+          "status": "FINISHED"
+        }
+      ]
+    },
+    {
+      "roundNumber": 3,
+      "title": "Semifinal",
+      "conditions": "",
+      "juryRevealEnabled": true,
+      "matches": [
+        {
+          "id": "cf3748c0-731c-46c5-b9df-29d52d42a58c",
+          "roundNumber": 3,
+          "order": 1,
+          "participantA": {
+            "id": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+            "username": "goof21",
+            "nickname": "goof",
+            "instagram": "https://www.instagram.com/goofyatwood/",
+            "youtube": "https://www.youtube.com/@goofyatwood",
+            "avatar": "https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "a1bdd623-4057-4d73-8ccc-e909fc35212d",
+            "username": "troubled_duck",
+            "nickname": "troubled_duck",
+            "instagram": null,
+            "youtube": "https://www.youtube.com/@troubled_duck",
+            "avatar": "https://cdn.discordapp.com/avatars/1141874824931721276/b69ad2d995ea4c4eb07af30c692271f1.png",
+            "hasSubmission": true
+          },
+          "winnerId": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+          "scoreA": 74.44,
+          "scoreB": 68.42,
+          "status": "FINISHED"
+        },
+        {
+          "id": "2e9a30c9-1ba9-4309-8ec1-2724fadaa0b2",
+          "roundNumber": 3,
+          "order": 2,
+          "participantA": {
+            "id": "1f3d1a65-62d1-4f3e-b53a-06cf782df142",
+            "username": "shxrtfuze",
+            "nickname": "fuze",
+            "instagram": "https://www.instagram.com/shxrtfuze/",
+            "youtube": "https://www.youtube.com/@ShxrtFuze",
+            "avatar": "https://cdn.discordapp.com/avatars/506560844784467991/a5d1548a271784067f7636ad675cf884.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+            "username": "walsiii",
+            "nickname": "walsiii",
+            "instagram": "https://instagram.com/w6lxy",
+            "youtube": "https://youtube.com/@walsiiiii",
+            "avatar": "https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png",
+            "hasSubmission": true
+          },
+          "winnerId": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+          "scoreA": 73.5,
+          "scoreB": 82.79,
+          "status": "FINISHED"
+        }
+      ]
+    },
+    {
+      "roundNumber": 4,
+      "title": "Final",
+      "conditions": "",
+      "juryRevealEnabled": true,
+      "matches": [
+        {
+          "id": "d4dc8b7d-0f36-4281-a74b-df3339c69d33",
+          "roundNumber": 4,
+          "order": 1,
+          "participantA": {
+            "id": "cc7ed953-07cb-4efe-a2ee-17cf14ba262b",
+            "username": "goof21",
+            "nickname": "goof",
+            "instagram": "https://www.instagram.com/goofyatwood/",
+            "youtube": "https://www.youtube.com/@goofyatwood",
+            "avatar": "https://cdn.discordapp.com/avatars/1258796182348763146/b6bc170b76b97e3576f887dbc3cf556c.png",
+            "hasSubmission": true
+          },
+          "participantB": {
+            "id": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+            "username": "walsiii",
+            "nickname": "walsiii",
+            "instagram": "https://instagram.com/w6lxy",
+            "youtube": "https://youtube.com/@walsiiiii",
+            "avatar": "https://cdn.discordapp.com/avatars/444067403002019841/443cae64e9e153cff3ad76a08e16e8b7.png",
+            "hasSubmission": true
+          },
+          "winnerId": "ce76c800-f117-48c2-aabd-4e14ecd714ef",
+          "scoreA": 84.09,
+          "scoreB": 86.74,
+          "status": "FINISHED"
+        }
+      ]
+    }
+  ]
+}

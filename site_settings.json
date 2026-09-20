@@ -1,0 +1,188 @@
+{
+  "timerIso": "2026-07-05T21:00:00.000Z",
+  "timerHeaderText": "JUDGING FINAL ROUND",
+  "ngcDeadlineIso": "2026-07-01T21:10:00.000Z",
+  "tournamentBracketHidden": false,
+  "description": "NO PROMPTS. NO SHORTCUTS. PROVE YOURSELF.",
+  "subDescription": "We created this tournament to give talented creators a chance to showcase their creativity in a competitive environment. Through multiple rounds, participants compete, improve their skills, and share their work with the community.",
+  "backgroundVideoFilename": "Comp 1_9.mp4",
+  "rounds": [
+    {
+      "id": "1",
+      "judge": {
+        "duration": "07.04-08.04",
+        "duration_amount": "2"
+      },
+      "duration": "23.03-06.04",
+      "duration_amount": "15"
+    },
+    {
+      "id": "2",
+      "judge": {
+        "duration": "23.04-24.04",
+        "duration_amount": "2"
+      },
+      "duration": "09.04-22.04",
+      "duration_amount": "14"
+    },
+    {
+      "id": "3",
+      "judge": {
+        "duration": "13.05-14.05",
+        "duration_amount": "2"
+      },
+      "duration": "25.04-12.05",
+      "duration_amount": "18"
+    },
+    {
+      "id": "4",
+      "judge": {
+        "duration": "06.06-07.06",
+        "duration_amount": "2"
+      },
+      "duration": "15.05-05.06",
+      "duration_amount": "22"
+    },
+    {
+      "id": "5",
+      "judge": {
+        "duration": "04.07-05.07",
+        "duration_amount": "2"
+      },
+      "duration": "08.06-03.07",
+      "duration_amount": "26"
+    }
+  ],
+  "specialThanks": [
+    {
+      "link": "https://www.youtube.com/channel/UCLCAnzlMv6T06yV_ZBNxPCA",
+      "name": "ckie"
+    },
+    {
+      "link": "https://www.instagram.com/saradov.hj/",
+      "name": "sardov"
+    },
+    {
+      "link": "https://www.instagram.com/n1krus_aep/",
+      "name": "n1"
+    },
+    {
+      "link": "https://www.instagram.com/so.w1ld/",
+      "name": "so.wild"
+    },
+    {
+      "link": "https://www.instagram.com/hydrroxide/",
+      "name": "hydroxyde"
+    },
+    {
+      "link": "https://www.instagram.com/torro.ixq/",
+      "name": "torro"
+    },
+    {
+      "link": "https://www.instagram.com/zelyobtw/",
+      "name": "zelyo"
+    },
+    {
+      "link": "https://www.instagram.com/hexterna.ng/",
+      "name": "hexterna"
+    }
+  ],
+  "winners": [
+    {
+      "place": "first",
+      "name": "walsii",
+      "title": "THE CHAMPION",
+      "link": "https://www.instagram.com/w6lxy/"
+    },
+    {
+      "place": "second",
+      "name": "goof",
+      "title": "THE FINALIST",
+      "link": "https://www.instagram.com/goofyatwood/"
+    },
+    {
+      "place": "third",
+      "name": "fuze",
+      "title": "THE BRONZE",
+      "link": "https://www.instagram.com/shxrtfuze/"
+    }
+  ],
+  "ngcResults": {
+    "headingAccent": "NGC",
+    "heading": "WINNER",
+    "winnerPlace": "1ST PLACE",
+    "winnerName": "Kaotse",
+    "winnerUrl": "https://www.youtube.com/@Kaotse",
+    "winnerVideoUrl": "https://www.youtube.com/watch?v=4Xki9AJhprs",
+    "winnerThumbnailUrl": "",
+    "restrictionLabel": "RESTRICTION",
+    "restriction": "USED RESTRICTION",
+    "prizeLabel": "PRIZE",
+    "prize": "$200",
+    "mentionsTitle": "HONORABLE MENTIONS",
+    "mentions": [
+      {
+        "name": "hosta",
+        "title": "",
+        "url": "https://streamable.com/p4gl4v",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "JJBoogie45",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=hW_QwoEZekc",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "hxste",
+        "title": "",
+        "url": "https://www.instagram.com/reels/DaFgrZHK6_I/",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "milade",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=-ZrSWgTWuW4",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "TAKEZO",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=Bxz3ReXlsjw",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "kum1te",
+        "title": "",
+        "url": "https://www.instagram.com/p/DaO4_fziFnq/",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "aiku",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=n7SCHsXDGyQ",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "mumu",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=PyvSNWKm9ME",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "Gabiru",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=ay02_WZfFL8",
+        "thumbnailUrl": ""
+      },
+      {
+        "name": "jen",
+        "title": "",
+        "url": "https://www.youtube.com/watch?v=QStcDbbhkNM",
+        "thumbnailUrl": ""
+      }
+    ]
+  },
+  "updatedAt": "2026-09-19T19:24:48.723Z",
+  "backgroundVideoUrl": "videos/Comp%201_9.mp4"
+}
