@@ -1,0 +1,6 @@
+.vercel
+.env.local
+.playwright-mcp
+fullpage_girl.png
+node_modules
+.DS_Store
